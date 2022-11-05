@@ -13,10 +13,23 @@ namespace __courses {
 	//	virtual void setNumOfAvailCourses()
 	//	virtual int64_t getNumOfAvailCourses() = 0;
 		virtual double getMark() = 0;
+		static void setNumOfAvailCourses(int64_t num) {
+			_numOfAvailCourses = num;
+		};
+		static int64_t count()
+		{
+			return _numOfAvailCourses;
+		}
+
+	    std::string getCourseName()
+		{
+			return _name;
+		}
+
 	protected:
 		std::string _name;
 		std::string _scienceArea;
-	//	int64_t _numOfAvailCourses;
+		static int64_t _numOfAvailCourses;
 	};
 
 	typedef const std::string& cStrRef;
@@ -109,7 +122,7 @@ namespace __courses {
 				_mark = 4;
 				break;
 			case 2:
-				_mark = 3
+				_mark = 3;
 				break;
 			case 1:
 			case 0:
