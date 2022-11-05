@@ -70,10 +70,67 @@ namespace __courses {
 
 	class CheckCourse : public Course
 	{
-	public:
-		CheckCourse(cStrRef name, cStrRef scienceArea, ...)
-		{
+	private:
 
+		template<typename T,typename... Args>
+		void calcHelper(std::size_t& nums, T&& t ,Args&&... args)
+		{
+			if ((typeid(t) == typeid(bool))) {
+				if (t) nums++;
+				calcHelper(nums, std::forward<Args>(args)...);
+			}
+			else {
+				throw std::runtime_error("Unsupported type...");
+			}
+		}
+
+		void calcHelper(std::size_t& nums) {};
+
+		double _mark;
+
+	public:
+		template<class... Args>
+		CheckCourse(cStrRef name, cStrRef scienceArea, Args&&... args)
+		{
+			const std::size_t size = sizeof...(args);
+			if (size != 4)
+			{
+				throw std::runtime_error("Size has to be equal to 4...");
+			}
+			std::size_t numOfPos = 0;
+			calcHelper(numOfPos,std::forward<Args>(args)...);
+			
+			switch (numOfPos)
+			{
+			case 4:
+				_mark = 5;
+				break;
+			case 3:
+				_mark = 4;
+				break;
+			case 2:
+				_mark = 3
+				break;
+			case 1:
+			case 0:
+				_mark = 2;
+				break;
+			default:
+				throw std::runtime_error("something strange...");
+				break;
+			}
+			
+		}
+
+		// add: copyConst, moveConst, copyOp, moveOp
+
+		double getMark() override {
+			return _mark;
+		}
+
+		void setMark(const double& mark)
+		{
+			_mark = mark;
 		}
 	};
 };
