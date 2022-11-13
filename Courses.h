@@ -12,7 +12,9 @@ namespace __courses {
 		virtual ~Course() = default;
 	//	virtual void setNumOfAvailCourses()
 	//	virtual int64_t getNumOfAvailCourses() = 0;
-		virtual double getMark() = 0;
+		virtual double getMark() {
+			return _mark;
+		};
 		static void setNumOfAvailCourses(int64_t num) {
 			_numOfAvailCourses = num;
 		};
@@ -21,15 +23,21 @@ namespace __courses {
 			return _numOfAvailCourses;
 		}
 
-	    std::string getCourseName()
+	    std::string getCourseName() const 
 		{
 			return _name;
+		}
+
+		std::string getScienceArea() const
+		{
+			return _scienceArea;
 		}
 
 	protected:
 		std::string _name;
 		std::string _scienceArea;
 		static int64_t _numOfAvailCourses;
+		double _mark;
 	};
 
 	typedef const std::string& cStrRef;
@@ -54,8 +62,6 @@ namespace __courses {
 		double getMark() override {
 			return _mark;
 		}
-	private:
-		double _mark;
 	};
 	
 	class AveragedCourse : public Course
@@ -77,8 +83,6 @@ namespace __courses {
 		double getMark() override {
 			return _mark;
 		}
-	private:
-		double _mark;
 	};
 
 	class CheckCourse : public Course
@@ -99,12 +103,13 @@ namespace __courses {
 
 		void calcHelper(std::size_t& nums) {};
 
-		double _mark;
 
 	public:
 		template<class... Args>
 		CheckCourse(cStrRef name, cStrRef scienceArea, Args&&... args)
 		{
+			_name = name;
+			_scienceArea = scienceArea;
 			const std::size_t size = sizeof...(args);
 			if (size != 4)
 			{
